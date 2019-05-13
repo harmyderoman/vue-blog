@@ -45,7 +45,7 @@
         ></v-toolbar-side-icon>
 
         <v-avatar
-          :tile="1"
+          :tile="avaTile"
           :size="50"
           color="grey lighten-4"
         >
@@ -61,6 +61,7 @@
           <v-btn 
           flat
           v-for="link in links"
+          :to="link.url"
           :key="link.title">   
             {{ link.title}}
           <v-icon icon right>{{ link.icon}}</v-icon>
@@ -84,7 +85,9 @@ export default {
   data() {
     return {
       drawer: false,
+      avaTile: true, // not round Logo
       links: [
+        { title: 'Home', icon: 'home', url: '/'},
         { title: 'My Blog', icon: 'star', url: '/myblog'},
         { title: 'New Post', icon: 'note_add', url: '/newpost'},
         { title: 'Log In', icon: 'person', url: '/login'},

@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Myblog from './views/Myblog.vue'
+import Newpost from './views/Newpost.vue'
+import Signup from './views/Signup.vue'
+import Login from './views/Login.vue'
 
 Vue.use(Router)
 
@@ -10,6 +14,26 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/myblog',
+      name: 'myblog',
+      component: Myblog
+    },
+    {
+      path: '/newpost',
+      name: 'newpost',
+      component: Newpost
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup
     },
     {
       path: '/about',
