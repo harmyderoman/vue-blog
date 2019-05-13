@@ -9,7 +9,7 @@
           <v-list class="pa-0">
             <v-list-tile avatar>
               <v-list-tile-avatar>
-                <img src="https://randomuser.me/api/portraits/men/85.jpg">
+                <img src="../src/assets/VueBlogLogo.png">
               </v-list-tile-avatar>
 
               <v-list-tile-content>
@@ -43,6 +43,14 @@
         class="hidden-md-and-up"
         @click="drawer = !drawer"
         ></v-toolbar-side-icon>
+
+        <v-avatar
+          :tile="1"
+          :size="50"
+          color="grey lighten-4"
+        >
+          <img src="../src/assets/VueBlogLogo.png" alt="avatar">
+        </v-avatar>
 
         <v-toolbar-title class="white--text">Vue Blog</v-toolbar-title>
 
