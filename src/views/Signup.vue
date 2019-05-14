@@ -4,7 +4,7 @@
           <v-flex xs12 sm8 md6>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>Registration form</v-toolbar-title>
                 <!-- <v-spacer></v-spacer> -->
                 
               </v-toolbar>
@@ -25,12 +25,11 @@
 
                   <v-text-field
                     v-model="email"
-                    prepend-icon="mail" 
-                    :error-messages="emailErrors"
+                    prepend-icon="mail"
+                    name="email"
+                    :rules="emailRules"
                     label="E-mail"
                     required
-                    @input="$v.email.$touch()"
-                    @blur="$v.email.$touch()"
                   ></v-text-field>
 
                   <v-text-field 
@@ -48,19 +47,19 @@
                   id="confirm" 
                   prepend-icon="lock" 
                   name="confirm" 
-                  label="Password Confirm" 
+                  label="Confirm Password" 
                   type="password"
                   :counter="6"
                   v-model="confirm"
-                  :rules="passRules">
+                  :rules="confPassRules">
                   </v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary"
-                @click="onSubmit"
-                :disabled="!valid">Login</v-btn>
+                @click="signUp"
+                :disabled="!valid">Sign Up</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -74,6 +73,7 @@
 export default {
   data() {
     return{
+      val: true,
       login: '',
       email: '',
       password: '',
@@ -85,15 +85,24 @@ export default {
       passRules: [
         v => !!v || 'Password is required',
         v => (v && v.length >= 6) || 'Password must be more than 5 characters'
+      ],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+/.test(v) || 'E-mail must be valid'
+      ],
+      confPassRules: [
+        v => !!v || 'E-mail is required',
+        v => v === this.password || "Password doesn't match"
       ]
     }
   },
   methods: {
-    onSubmit(){
+    signUp(){
       if (this.$refs.form.validate()){
         const user = {
           login: this.login,
-          password: this.password
+          password: this.password,
+          email: this.email
         }
         console.log(user)
       }

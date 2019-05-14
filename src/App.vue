@@ -13,7 +13,7 @@
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title>John Leider</v-list-tile-title>
+                <v-list-tile-title>Wellcome, {{ nickname }}!</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -52,7 +52,11 @@
           <img src="../src/assets/VueBlogLogo.png" alt="avatar">
         </v-avatar>
 
-        <v-toolbar-title class="white--text">Vue Blog</v-toolbar-title>
+        <v-toolbar-title class="white--text">
+          <router-link class="pointer" to="/" tag="span">
+          Vue Blog
+        </router-link>
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -84,6 +88,7 @@
 export default {
   data() {
     return {
+      nickname: 'Author',
       drawer: false,
       avaTile: true, // not round Logo
       links: [
@@ -97,3 +102,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.pointer{
+  cursor: pointer;
+}
+</style>
+
