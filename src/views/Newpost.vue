@@ -13,10 +13,10 @@
             :rules="[v => !!v || 'Title is required']"
           ></v-text-field>
           <v-textarea
-            name="bodyText"
+            name="text"
             label="Write something..."
             type="text"
-            v-model="bodyText"
+            v-model="text"
             :rules="[v => !!v || 'Text is required']"
           ></v-textarea>
         </v-form>
@@ -67,28 +67,32 @@ export default {
     return{
       postAdded: false,
       title: '',
-      bodyText: '',
+      text: '',
       valid: false,
       author: 'Admin'
     }
   },
-    methods: {
-      createPost () {
-        if (this.$refs.form.validate()) {
-          // logic
-          var now = new Date().toDateString();
-          const post = {
+  methods: {
+    createPost () {
+      if (this.$refs.form.validate()) {
+        const now = new Date().toDateString();
+        let newId = this.$store.getters.postSize;
+        const post = {
+            author: this.$store.getters.author,
+            id: (++newId).toString(),
             title: this.title,
-            bodyText: this.bodyText,
-            author: this.author,
-            date: now
-          }
-          this.postAdded = true
-          this.title = ''
-          this.bodyText = ''
-          this.titlevalid = false
-          this.author = 'Admin'
-          // eslint-disable-next-line
+            img: 'https://cdn-images-1.medium.com/max/1200/1*kz9D-JB0Lrk4RfhInh_3fg.png',
+            date: now,
+            text: this.text,
+        }
+        this.postAdded = true
+        this.$store.dispatch('createPost', post)
+        
+          // this.title = ''
+          // this.text = ''
+          // this.titlevalid = false
+          // this.author = 'Admin'
+         // eslint-disable-next-line
           console.log(post)
         }
       }

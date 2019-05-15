@@ -37,9 +37,22 @@ export default{
             }
           ]
     },
-    mutations: {},
-    actions: {},
+    mutations: {
+        createPost(state, payload){
+            state.posts.push(payload)
+        }
+    },
+    actions: {
+        createPost({commit}, payload) {
+            // payload.id = Math.random()
+
+            commit('createPost', payload)
+        }
+    },
     getters: {
+        postSize(state) {
+            return state.posts.length
+        },
         posts(state) {
             return state.posts
         },

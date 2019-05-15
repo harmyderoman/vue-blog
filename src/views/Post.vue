@@ -3,10 +3,10 @@
         <v-layout row>
             <v-flex s12>
                 <v-card>
-                    <v-card-media
+                    <v-img
                     height="500px"
                     :src="post.img">
-                    </v-card-media>
+                    </v-img>
                     <v-card-text>
                         <h1>
                         {{ post.title }}

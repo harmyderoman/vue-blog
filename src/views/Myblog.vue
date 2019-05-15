@@ -20,8 +20,8 @@
           <v-container fill-height fluid>
             <v-layout fill-height>
               <v-flex xs12 align-end flexbox>
-                <span class="headline">{{ post.title}}</span><br>
-                <span>{{ post.author}}</span>
+                <span class="headline ts">{{ post.title}}</span><br>
+                <span class="ts">{{ post.author}}</span>
               </v-flex>
             </v-layout>
           </v-container>
