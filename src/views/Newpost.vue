@@ -23,8 +23,8 @@
         <v-layout row class="mb-3">
           <v-flex xs12>
             <v-btn class="warning">
-              Upload
-              <v-icon right dark>cloud_upload</v-icon>
+              Upload Image
+              <v-icon right dark>add_photo_alternate</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
@@ -88,7 +88,7 @@ export default {
           this.bodyText = ''
           this.titlevalid = false
           this.author = 'Admin'
-
+          // eslint-disable-next-line
           console.log(post)
         }
       }

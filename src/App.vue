@@ -35,6 +35,22 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
+        <v-divider></v-divider>
+        <v-list v-if="logined">
+            <v-list-tile flat><v-icon icon left>exit_to_app</v-icon>
+            Log  Out
+            </v-list-tile>
+          </v-list>
+          <v-list v-else>
+            <v-list-tile 
+              flat
+              v-for="link in loginLinks"
+              :to="link.url"
+              :key="link.title">
+              <v-icon icon left>{{ link.icon}}</v-icon>   
+                {{ link.title}}
+            </v-list-tile>
+          </v-list>
 
       </v-navigation-drawer>
       
@@ -70,8 +86,26 @@
             {{ link.title}}
           <v-icon icon right>{{ link.icon}}</v-icon>
          </v-btn>
-
+        <v-divider vertical dark></v-divider>
+          <template v-if="logined">
+            <v-btn flat>
+              Log  Out
+            <v-icon icon right>exit_to_app</v-icon>
+            </v-btn>
+          </template>
+          <template v-else>
+            <v-btn 
+              flat
+              v-for="link in loginLinks"
+              :to="link.url"
+              :key="link.title">   
+                {{ link.title}}
+              <v-icon icon right>{{ link.icon}}</v-icon>
+            </v-btn>
+          </template>
+          
         </v-toolbar-items>
+        
 
       </v-toolbar>
 
@@ -88,13 +122,17 @@
 export default {
   data() {
     return {
+      logined: false,
       nickname: 'Author',
       drawer: false,
       avaTile: true, // not round Logo
       links: [
         { title: 'Home', icon: 'home', url: '/'},
         { title: 'My Blog', icon: 'star', url: '/myblog'},
-        { title: 'New Post', icon: 'note_add', url: '/newpost'},
+        { title: 'New Post', icon: 'note_add', url: '/newpost'}
+        
+      ],
+      loginLinks: [
         { title: 'Log In', icon: 'person', url: '/login'},
         { title: 'Sign Up', icon: 'person_add', url:  '/signup' }
       ]

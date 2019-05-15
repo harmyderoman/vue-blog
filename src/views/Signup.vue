@@ -104,6 +104,7 @@ export default {
           password: this.password,
           email: this.email
         }
+        // eslint-disable-next-line
         console.log(user)
       }
     }

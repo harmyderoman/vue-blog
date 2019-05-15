@@ -72,6 +72,7 @@ export default {
           login: this.login,
           password: this.password
         }
+        // eslint-disable-next-line
         console.log(user)
       }
     }

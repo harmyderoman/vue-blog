@@ -5,6 +5,7 @@ import Myblog from './views/Myblog.vue'
 import Newpost from './views/Newpost.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
+import Post from './views/Post.vue'
 
 Vue.use(Router)
 
@@ -14,6 +15,11 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/post/:id',
+      name: 'Post',
+      component: Post
     },
     {
       path: '/login',
