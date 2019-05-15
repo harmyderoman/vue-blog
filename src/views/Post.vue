@@ -5,17 +5,17 @@
                 <v-card>
                     <v-card-media
                     height="500px"
-                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                    :src="post.img">
                     </v-card-media>
                     <v-card-text>
                         <h1>
-                        Title
+                        {{ post.title }}
                         </h1><v-divider></v-divider>
-                        <h3>Roma</h3><span>10.12.1900</span>
+                        <h3>{{ post.author }}</h3><span>{{ post.date }}</span>
                         </v-card-text>
                     <v-card-text>
                         <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis provident quia quis molestiae eaque officia, ea sit quibusdam voluptatem porro?
+                        {{ post.text }}
                         </p>
                     </v-card-text>
                     <v-divider></v-divider>
@@ -32,6 +32,13 @@
 
 <script>
 export default {
+    props: ['author', 'id' ],
+    computed: {
+        post() {
+            var id = this.id
+            return this.$store.getters.postById(id)
+        }
+    }
     
 }
 </script>

@@ -10,7 +10,7 @@
     xl3 lg4 md4
     xs12 sm6 pa-2 mb-3
     v-for="post in posts"
-    :key="post.title">
+    :key="post.id">
       <v-card>
         <v-img
           class="white--text"
@@ -34,7 +34,7 @@
         </v-card-title>
         <v-card-actions>
           <v-btn flat color="primary" 
-          :to="'/post/' + post.author.toLowerCase() + '/' + post.title.replace(/\s+/g, '').toLowerCase()">Read More</v-btn>
+          :to="'/post/' + post.author.toLowerCase() + '/' + post.id">Read More</v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="orange">Edit</v-btn>
         </v-card-actions>
@@ -51,27 +51,15 @@
 export default {
   data() {
     return{
-       posts: [
-        { author: 'Roma', 
-        title: "First Post", 
-        img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-        date: "14.05.2019", 
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-        },
-        { author: 'Roma', 
-        title: "Second Post", 
-        img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-        date: "13.05.2019", 
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-        },
-        { author: 'Roma', 
-        title: "Third Post", 
-        img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-        date: "10.05.2019", 
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-        },
-      ]
+      // author: 'Roma'
+     
+    }
+  },
+  computed: {
+    posts() {
+      return this.$store.getters.authorPosts
     }
   }
+
 }
 </script>
