@@ -12,7 +12,7 @@
                 <v-form ref="form"
                   v-model="valid"
                   lazy-validation>
-                  <v-text-field 
+                  <!-- <v-text-field 
                   prepend-icon="person" 
                   name="login" 
                   label="Login" 
@@ -21,7 +21,7 @@
                   
                   :rules="nameRules"
                   required>
-                  </v-text-field>
+                  </v-text-field> -->
 
                   <v-text-field
                     v-model="email"
@@ -59,7 +59,8 @@
                 <v-spacer></v-spacer>
                 <v-btn color="primary"
                 @click="signUp"
-                :disabled="!valid">Sign Up</v-btn>
+                :loading="loading"
+                :disabled="!valid || loading">Sign Up</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -96,16 +97,26 @@ export default {
       ]
     }
   },
+  computed: {
+      loading () {
+        return this.$store.getters.loading
+      }
+    },
   methods: {
     signUp(){
       if (this.$refs.form.validate()){
         const user = {
-          login: this.login,
+          // login: this.login,
           password: this.password,
           email: this.email
         }
+
+        this.$store.dispatch('registUser', user)
+          .then(() =>{
+            this.$router.push('/')
+          })
         // eslint-disable-next-line
-        console.log(user)
+        // console.log(user)
       }
     }
   }
