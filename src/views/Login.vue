@@ -14,10 +14,10 @@
                   lazy-validation>
                   <v-text-field 
                   prepend-icon="person" 
-                  name="login" 
-                  label="Login" 
+                  name="email" 
+                  label="Email" 
                   type="text"
-                  v-model="login"
+                  v-model="email"
                   
                   :rules="nameRules"
                   required>
@@ -39,7 +39,8 @@
                 <v-spacer></v-spacer>
                 <v-btn color="primary"
                 @click="onSubmit"
-                :disabled="!valid">Login</v-btn>
+                :loading="loading"
+                :disabled="!valid || loading">Log In</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -53,11 +54,11 @@
 export default {
   data() {
     return{
-      login: '',
+      email: '',
       password: '',
       valid: false,
       nameRules: [
-        v => !!v || 'Login is required'
+        v => !!v || 'Email is required'
       ],
       passRules: [
         v => !!v || 'Password is required',
@@ -65,15 +66,24 @@ export default {
       ]
     }
   },
+  computed: {
+    loading() {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     onSubmit(){
       if (this.$refs.form.validate()){
         const user = {
-          login: this.login,
+          email: this.email,
           password: this.password
         }
-        // eslint-disable-next-line
-        console.log(user)
+        
+        this.$store.dispatch('registUser', user)
+          .then(() =>{
+              this.$router.push('/')
+            })
+            .catch(err => console.log(err))
       }
     }
   }

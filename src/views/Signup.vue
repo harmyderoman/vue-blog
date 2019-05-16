@@ -113,8 +113,9 @@ export default {
 
         this.$store.dispatch('registUser', user)
           .then(() =>{
-            this.$router.push('/')
+            this.$router.push('/login')
           })
+          .catch(err => console.log(err))
         // eslint-disable-next-line
         // console.log(user)
       }
