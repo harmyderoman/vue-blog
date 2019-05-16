@@ -15,13 +15,13 @@ new Vue({
   created() {
     
     fb.initializeApp({
-      apiKey: "AIzaSyB2k3fvrjS7fB2JmUr4RbroZ_ZYrBv9h-s",
+      apiKey: "-s",
       authDomain: "vue-blog-journal.firebaseapp.com",
       databaseURL: "https://vue-blog-journal.firebaseio.com",
       projectId: "vue-blog-journal",
       storageBucket: "vue-blog-journal.appspot.com",
       messagingSenderId: "46284764099",
-      appId: "1:46284764099:web:9965c1db71ae8a79"
+      appId: ""
     })
   },
 }).$mount('#app')
