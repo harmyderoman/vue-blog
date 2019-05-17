@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as fb from 'firebase'
+import config from './apifb'
 
 Vue.config.productionTip = false
 
@@ -14,14 +15,6 @@ new Vue({
   render: h => h(App),
   created() {
     
-    fb.initializeApp({
-      apiKey: "-s",
-      authDomain: "vue-blog-journal.firebaseapp.com",
-      databaseURL: "https://vue-blog-journal.firebaseio.com",
-      projectId: "vue-blog-journal",
-      storageBucket: "vue-blog-journal.appspot.com",
-      messagingSenderId: "46284764099",
-      appId: ""
-    })
+    fb.initializeApp({config})
   },
 }).$mount('#app')
