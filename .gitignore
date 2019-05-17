@@ -2,6 +2,8 @@
 node_modules
 /dist
 main.js
+/NoGitStuff
+NoGitStuff
 
 # local env files
 .env.local
