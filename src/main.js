@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as fb from 'firebase'
-import config from './apifb'
+import {firebaseConfig} from './apifb'
 
 Vue.config.productionTip = false
 
@@ -14,7 +14,11 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    
-    fb.initializeApp({config})
+    fb.initializeApp(firebaseConfig),
+    fb.auth().onAuthStateChanged(user => {
+      if(user){
+        this.$store.dispatch('autoLoginUser', user)
+      }
+    })
   },
 }).$mount('#app')

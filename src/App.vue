@@ -36,8 +36,8 @@
           </v-list-tile>
         </v-list>
         <v-divider></v-divider>
-        <v-list v-if="logined">
-            <v-list-tile flat><v-icon icon left>exit_to_app</v-icon>
+        <v-list v-if="loggedIn">
+            <v-list-tile flat @click="logOut"><v-icon icon left>exit_to_app</v-icon>
             Log  Out
             </v-list-tile>
           </v-list>
@@ -86,9 +86,13 @@
             {{ link.title}}
           <v-icon icon right>{{ link.icon}}</v-icon>
          </v-btn>
+
         <v-divider vertical dark></v-divider>
-          <template v-if="logined">
-            <v-btn flat>
+
+          <template v-if="loggedIn">
+            <v-btn 
+            flat
+            @click="logOut">
               Log  Out
             <v-icon icon right>exit_to_app</v-icon>
             </v-btn>
@@ -115,6 +119,25 @@
 
       <v-footer app></v-footer>
 
+        <template v-if="error">
+          <v-snackbar
+          :bottom="true"
+          :multi-line="true"
+          :timeout="5000"
+          @input="closeError"
+          value="true"
+          >
+          {{error}}
+            <v-btn
+            color="pink"
+            flat
+            @click="closeError"
+            >
+            Close
+            </v-btn>
+          </v-snackbar>
+        </template>
+
     </v-app>  
 </template>
 
@@ -122,20 +145,44 @@
 export default {
   data() {
     return {
-      logined: false,
       nickname: 'Author',
       drawer: false,
       avaTile: true, // not round Logo
-      links: [
-        { title: 'Home', icon: 'home', url: '/'},
-        { title: 'My Blog', icon: 'star', url: '/myblog'},
-        { title: 'New Post', icon: 'note_add', url: '/newpost'}
-        
-      ],
       loginLinks: [
         { title: 'Log In', icon: 'person', url: '/login'},
         { title: 'Sign Up', icon: 'person_add', url:  '/signup' }
       ]
+    }
+  },
+  computed: {
+  
+    error() {
+      return this.$store.getters.error
+    },
+    loggedIn() {
+      return this.$store.getters.loggedIn
+    },
+    links(){
+      if(this.loggedIn){
+        return[
+          { title: 'Home', icon: 'home', url: '/'},
+          { title: 'My Blog', icon: 'star', url: '/myblog'},
+          { title: 'New Post', icon: 'note_add', url: '/newpost'}
+        ]
+      } else{
+        return [
+          { title: 'Home', icon: 'home', url: '/'}
+        ]
+      }
+    }
+  },
+  methods: {
+    closeError(){
+      this.$store.dispatch('clearError')
+    },
+    logOut(){
+      this.$store.dispatch('logOutUser')
+      this.$router.push('/')
     }
   }
 }

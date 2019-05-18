@@ -6,6 +6,7 @@ import Newpost from './views/Newpost.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import Post from './views/Post.vue'
+import Guard from './router-guard'
 
 Vue.use(Router)
 
@@ -30,12 +31,14 @@ export default new Router({
     {
       path: '/myblog',
       name: 'myblog',
-      component: Myblog
+      component: Myblog,
+      beforeEnter: Guard
     },
     {
       path: '/newpost',
       name: 'newpost',
-      component: Newpost
+      component: Newpost,
+      beforeEnter: Guard
     },
     {
       path: '/signup',
