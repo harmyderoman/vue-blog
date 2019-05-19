@@ -1,9 +1,16 @@
 import * as fb from 'firebase'
 
 class User {
-    constructor (id) {
+    constructor (id, nickname) {
         this.id = id
+        this.nickname = nickname
     }
+}
+class Nickname {
+  constructor (user){
+    this.nickname = user.nickname,
+    this.email = user.email
+  }
 }
 
 export default{
@@ -16,12 +23,16 @@ export default{
         }
     },
     actions: {
-        async registUser ({commit}, {email, password}) {
+        async registUser ({commit}, {nickname, email, password}) {
             commit('clearError')
             commit('setLoading', true)
             try {
               const user = await fb.auth().createUserWithEmailAndPassword(email, password)
-              commit('setUser', new User(user.uid))
+              const newAuthor = new Nickname({nickname, email})
+              console.log(newAuthor)
+              await fb.database().ref('authors').push(newAuthor)
+              
+              commit('setUser', new User(user.uid, nickname))
               commit('setLoading', false)
             } catch (error) {
               commit('setLoading', false)

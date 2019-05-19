@@ -13,7 +13,7 @@
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title>Wellcome, {{ nickname }}!</v-list-tile-title>
+                <v-list-tile-title>Wellcome,{{ nickname }}!</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -70,7 +70,7 @@
 
         <v-toolbar-title class="white--text">
           <router-link class="pointer" to="/" tag="span">
-          Vue Blog
+          Vue Blog, {{ nickname }}
         </router-link>
         </v-toolbar-title>
 
@@ -145,7 +145,6 @@
 export default {
   data() {
     return {
-      nickname: 'Author',
       drawer: false,
       avaTile: true, // not round Logo
       loginLinks: [
@@ -155,7 +154,12 @@ export default {
     }
   },
   computed: {
-  
+    nickname() {
+      if(this.$store.getters.user === null){
+        return 'Author'
+      }
+      return this.$store.getters.user.nickname
+    },
     error() {
       return this.$store.getters.error
     },

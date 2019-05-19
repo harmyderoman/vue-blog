@@ -12,16 +12,12 @@
                 <v-form ref="form"
                   v-model="valid"
                   lazy-validation>
-                  <!-- <v-text-field 
+                  <v-text-field 
                   prepend-icon="person" 
-                  name="login" 
-                  label="Login" 
+                  label="Nickname" 
                   type="text"
-                  v-model="login"
-                  
-                  :rules="nameRules"
-                  required>
-                  </v-text-field> -->
+                  v-model="nickname">
+                  </v-text-field>
 
                   <v-text-field
                     v-model="email"
@@ -75,14 +71,14 @@ export default {
   data() {
     return{
       val: true,
-      login: '',
+      nickname: 'Author',
       email: '',
       password: '',
       confirm: '',
       valid: false,
-      nameRules: [
-        v => !!v || 'Login is required'
-      ],
+      // nameRules: [
+      //   v => !!v || 'Login is required'
+      // ],
       passRules: [
         v => !!v || 'Password is required',
         v => (v && v.length >= 6) || 'Password must be more than 5 characters'
@@ -106,14 +102,14 @@ export default {
     signUp(){
       if (this.$refs.form.validate()){
         const user = {
-          // login: this.login,
+          nickname: this.nickname,
           password: this.password,
           email: this.email
         }
 
         this.$store.dispatch('registUser', user)
           .then(() =>{
-            this.$router.push('/login')
+            this.$router.push('/')
           })
           .catch(() => {})
       }

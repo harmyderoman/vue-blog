@@ -92,14 +92,14 @@ export default {
         }
         this.postAdded = true
         this.$store.dispatch('createPost', post)
-          .then(()=>{
-            this.$router.push('/myblog')
-          })
-          .catch(()=>{})
+          // .then(()=>{
+          //   this.$router.push('/myblog')
+          // })
+          // .catch(()=>{})
         
-          // this.title = ''
-          // this.text = ''
-          // this.titlevalid = false
+          this.title = ''
+          this.text = ''
+          this.titlevalid = false
           // this.author = 'Admin'
          // eslint-disable-next-line
           console.log(post)
