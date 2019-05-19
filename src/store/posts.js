@@ -1,3 +1,16 @@
+import * as fb from 'firebase';
+
+class Post{
+    constructor(title, text, author, img = '', id = null, date){
+        this.title = title
+        this.text = text
+        this.author = author
+        this.img = img
+        this.id = id
+        this.date = date
+    }
+}
+
 export default{
     state: {
         author: 'Roma',
@@ -43,10 +56,35 @@ export default{
         }
     },
     actions: {
-        createPost({commit}, payload) {
+        async createPost({commit, getters}, payload) {
             // payload.id = Math.random()
+            commit('clearError')
+            commit('setLoading', true)
 
-            commit('createPost', payload)
+            try{
+                const newPost = new Post(
+                    payload.title, 
+                    payload.text, 
+                    payload.author, 
+                    'https://cdn-images-1.medium.com/max/1200/1*kz9D-JB0Lrk4RfhInh_3fg.png', 
+                    payload.id,
+                    payload.date)
+
+                const post = await fb.database().ref('posts').push(newPost)
+                
+                commit('setLoading', false)
+                commit('createPost', {
+                    ...newPost,
+                    id: post.key
+                })
+                console.log(post)
+            } catch(error){
+                commit('setError', error.message)
+                commit('setLoading', false)
+                throw(error)
+            }
+
+            // commit('createPost', payload)
         }
     },
     getters: {

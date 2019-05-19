@@ -72,6 +72,11 @@ export default {
       author: 'Admin'
     }
   },
+  computed: {
+    loading(){
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     createPost () {
       if (this.$refs.form.validate()) {
@@ -87,6 +92,10 @@ export default {
         }
         this.postAdded = true
         this.$store.dispatch('createPost', post)
+          .then(()=>{
+            this.$router.push('/myblog')
+          })
+          .catch(()=>{})
         
           // this.title = ''
           // this.text = ''
