@@ -20,5 +20,6 @@ new Vue({
         this.$store.dispatch('autoLoginUser', user)
       }
     })
+    this.$store.dispatch('fetchPosts')
   },
 }).$mount('#app')

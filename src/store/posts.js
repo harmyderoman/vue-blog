@@ -15,44 +15,47 @@ export default{
     state: {
         author: 'Roma',
         posts: [
-            { 
-                author: 'Roma', 
-                id: '1',
-                title: "First Post", 
-                img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-                date: "14.05.2019", 
-                text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            },
-            {   
-                author: 'Roma', 
-                id: '2',
-                title: "Second Post", 
-                img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-                date: "13.05.2019", 
-                text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            },
-            {   
-                author: 'Roma', 
-                id: '3',
-                title: "Third Post", 
-                img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-                date: "10.05.2019", 
-                text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            },
-            {   
+            // { 
+            //     author: 'Roma', 
+            //     id: '1',
+            //     title: "First Post", 
+            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
+            //     date: "14.05.2019", 
+            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
+            // },
+            // {   
+            //     author: 'Roma', 
+            //     id: '2',
+            //     title: "Second Post", 
+            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
+            //     date: "13.05.2019", 
+            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
+            // },
+            // {   
+            //     author: 'Roma', 
+            //     id: '3',
+            //     title: "Third Post", 
+            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
+            //     date: "10.05.2019", 
+            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
+            // },
+            // {   
                 
-                author: 'Alexa', 
-                id: '4',
-                title: "Third Post", 
-                img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-                date: "10.05.2019", 
-                text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            }
+            //     author: 'Alexa', 
+            //     id: '4',
+            //     title: "Third Post", 
+            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
+            //     date: "10.05.2019", 
+            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
+            // }
           ]
     },
     mutations: {
         createPost(state, payload){
             state.posts.push(payload)
+        },
+        loadPosts(state, payload){
+            state.posts = payload
         }
     },
     actions: {
@@ -85,6 +88,23 @@ export default{
             }
 
             // commit('createPost', payload)
+        },
+        async fetchPosts({commit}) {
+            commit('clearError')
+            commit('setLoading', true)
+            try {
+                const fbPosts = await fb.database().ref('posts').once('value')
+                const posts = fbPosts.val()
+                console.log(posts)
+                commit('loadPosts', posts)
+
+                commit('setLoading', false)
+            } catch(error){
+                commit('setError', error.message)
+                commit('setLoading', false)
+
+                throw error
+            }
         }
     },
     getters: {
