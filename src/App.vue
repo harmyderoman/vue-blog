@@ -171,7 +171,8 @@ export default {
         return[
           { title: 'Home', icon: 'home', url: '/'},
           { title: 'My Blog', icon: 'star', url: '/myblog'},
-          { title: 'New Post', icon: 'note_add', url: '/newpost'}
+          { title: 'New Post', icon: 'note_add', url: '/newpost'},
+          { title: 'Calendar', icon: 'date_range', url: '/calendar'}
         ]
       } else{
         return [
