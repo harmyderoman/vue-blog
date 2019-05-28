@@ -13,7 +13,7 @@ class Post{
 
 export default{
     state: {
-        author: 'Roma',
+        author: 'Author',
         posts: [
             // { 
             //     author: 'Roma', 
@@ -109,6 +109,9 @@ export default{
     },
     getters: {
         postSize(state) {
+            if(state.posts === null){
+                return 0
+            }
             return state.posts.length
         },
         posts(state) {

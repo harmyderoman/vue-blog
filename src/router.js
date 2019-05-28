@@ -7,7 +7,6 @@ import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import Post from './views/Post.vue'
 import Guard from './router-guard'
-import Calendar from './views/Calendar.vue'
 
 Vue.use(Router)
 
@@ -45,11 +44,6 @@ export default new Router({
       path: '/signup',
       name: 'signup',
       component: Signup
-    },
-    {
-      path: '/calendar',  // For
-      name: 'calendar',   // Training 
-      component: Calendar // Porpose only!!!
     },
     {
       path: '/about',
