@@ -1,9 +1,9 @@
 import * as fb from 'firebase'
 
 class User {
-    constructor (id, nickname) {
+    constructor (id, email) {
         this.uid = id
-        this.nickname = nickname
+        this.email = email
     }
 }
 class Nickname {
@@ -32,7 +32,7 @@ export default{
               console.log(user)
               await fb.database().ref('authors').push(newAuthor)
               
-              commit('setUser', new User(user.uid, nickname))
+              commit('setUser', new User(user.uid, email))
               commit('setLoading', false)
             } catch (error) {
               commit('setLoading', false)

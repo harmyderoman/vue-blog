@@ -1,11 +1,11 @@
 import * as fb from 'firebase';
 
 class Post{
-    constructor(title, text, author, img = '', id = null, date){
+    constructor(title, text, author, imageSrc = '', id = null, date){
         this.title = title
         this.text = text
         this.author = author
-        this.img = img
+        this.imageSrc = imageSrc
         this.id = id
         this.date = date
     }
@@ -14,41 +14,7 @@ class Post{
 export default{
     state: {
         author: 'Author',
-        posts: [
-            // { 
-            //     author: 'Roma', 
-            //     id: '1',
-            //     title: "First Post", 
-            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-            //     date: "14.05.2019", 
-            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            // },
-            // {   
-            //     author: 'Roma', 
-            //     id: '2',
-            //     title: "Second Post", 
-            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-            //     date: "13.05.2019", 
-            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            // },
-            // {   
-            //     author: 'Roma', 
-            //     id: '3',
-            //     title: "Third Post", 
-            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-            //     date: "10.05.2019", 
-            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            // },
-            // {   
-                
-            //     author: 'Alexa', 
-            //     id: '4',
-            //     title: "Third Post", 
-            //     img: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg', 
-            //     date: "10.05.2019", 
-            //     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit explicabo, nihil reiciendis quo a quaerat cum error?'
-            // }
-          ]
+        posts: []
     },
     mutations: {
         createPost(state, payload){
@@ -64,21 +30,30 @@ export default{
             commit('clearError')
             commit('setLoading', true)
 
+            const image = payload.img
+
             try{
                 const newPost = new Post(
                     payload.title, 
                     payload.text, 
-                    payload.author, 
-                    'https://cdn-images-1.medium.com/max/1200/1*kz9D-JB0Lrk4RfhInh_3fg.png', 
+                    'Anonimus', //payload.author 
+                    '', 
                     payload.id,
                     payload.date)
 
                 const post = await fb.database().ref('posts').push(newPost)
+                const imageExt = image.name.slice(image.name.lastIndexOf('.'))
+                const fileData = await fb.storage().ref(`posts/${post.key}.${imageExt}`).put(image)
+                const imageSrc = fileData.metadata.downloadURLs[0]
+                await fb.database().ref('posts').child(post.key).update({
+                    imageSrc
+                })
                 
                 commit('setLoading', false)
                 commit('createPost', {
                     ...newPost,
-                    id: post.key
+                    id: post.key,
+                    imageSrc: imageSrc
                 })
                 console.log(post)
             } catch(error){
@@ -95,7 +70,7 @@ export default{
             try {
                 const fbPosts = await fb.database().ref('posts').once('value')
                 const posts = fbPosts.val()
-                console.log(posts)
+                //console.log(posts)
                 commit('loadPosts', posts)
 
                 commit('setLoading', false)

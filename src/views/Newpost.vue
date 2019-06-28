@@ -22,15 +22,22 @@
         </v-form>
         <v-layout row class="mb-3">
           <v-flex xs12>
-            <v-btn class="warning">
+            <v-btn class="warning" @click="triggerUploud">
               Upload Image
               <v-icon right dark>add_photo_alternate</v-icon>
             </v-btn>
+            <input 
+            ref="fileInput" 
+            type="file" 
+            style="display: none;" 
+            accept="image/*"
+            @change="onFileChange"
+            >
           </v-flex>
         </v-layout>
         <v-layout row>
           <v-flex xs12>
-            <img src="" height="100">
+            <img :src="imageSrc" height="100" v-if="imageSrc">
           </v-flex>
         </v-layout>
  
@@ -38,7 +45,7 @@
           <v-flex xs12>
             <v-spacer></v-spacer>
             <v-btn
-              :disabled="!valid"
+              :disabled="!valid || !image"
               class="success"
               @click="createPost"
             >
@@ -69,7 +76,9 @@ export default {
       title: '',
       text: '',
       valid: false,
-      author: 'Admin'
+      author: 'Admin',
+      image: null,
+      imageSrc: ''
     }
   },
   computed: {
@@ -78,15 +87,28 @@ export default {
     }
   },
   methods: {
+    triggerUploud(){
+      this.$refs.fileInput.click()
+    },
+    onFileChange(event){
+      const file = event.target.files[0]
+
+      const reader = new FileReader()
+      reader.onload = e => {
+        this.imageSrc = reader.result
+      }
+      reader.readAsDataURL(file)
+      this.image = file 
+    },
     createPost () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.imageSrc) {
         const now = new Date().toDateString();
         let newId = this.$store.getters.postSize;
         const post = {
-            author: this.$store.getters.user.nickname,
+            author: this.author, //nickname
             id: (++newId).toString(),
             title: this.title,
-            img: 'https://cdn-images-1.medium.com/max/1200/1*kz9D-JB0Lrk4RfhInh_3fg.png',
+            img: this.image,
             date: now,
             text: this.text,
         }
