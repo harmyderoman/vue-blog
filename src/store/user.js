@@ -2,7 +2,7 @@ import * as fb from 'firebase'
 
 class User {
     constructor (id, nickname) {
-        this.id = id
+        this.uid = id
         this.nickname = nickname
     }
 }
@@ -29,7 +29,7 @@ export default{
             try {
               const user = await fb.auth().createUserWithEmailAndPassword(email, password)
               const newAuthor = new Nickname({nickname, email})
-              console.log(newAuthor)
+              console.log(user)
               await fb.database().ref('authors').push(newAuthor)
               
               commit('setUser', new User(user.uid, nickname))
@@ -54,7 +54,8 @@ export default{
             }
           },
           autoLoginUser({commit}, payload){
-            commit('setUser', new User(payload.uid))
+            // const nickname = await 
+            commit('setUser', new User(payload.uid, payload.nickname))
           },
           logOutUser({commit}) {
             fb.auth().signOut()

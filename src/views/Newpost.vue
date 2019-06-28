@@ -83,7 +83,7 @@ export default {
         const now = new Date().toDateString();
         let newId = this.$store.getters.postSize;
         const post = {
-            author: this.$store.getters.author,
+            author: this.$store.getters.user.nickname,
             id: (++newId).toString(),
             title: this.title,
             img: 'https://cdn-images-1.medium.com/max/1200/1*kz9D-JB0Lrk4RfhInh_3fg.png',

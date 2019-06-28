@@ -13,7 +13,8 @@
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title>Wellcome,{{ nickname }}!</v-list-tile-title>
+                <v-list-tile-title>Wellcome, {{ nickname }}!</v-list-tile-title>
+                <!-- <v-list-tile-title>Wellcome,{{ user }}!</v-list-tile-title> -->
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -70,8 +71,11 @@
 
         <v-toolbar-title class="white--text">
           <router-link class="pointer" to="/" tag="span">
-          Vue Blog, {{ nickname }}
+          Vue Blog. Hello, {{ nickname }}!
         </router-link>
+          <!-- <router-link class="pointer" to="/" tag="span">
+          Vue Blog, {{ user }}
+        </router-link> -->
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -154,6 +158,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$store.getters.user
+    },
     nickname() {
       if(this.$store.getters.user === null){
         return 'Author'
@@ -171,8 +178,7 @@ export default {
         return[
           { title: 'Home', icon: 'home', url: '/'},
           { title: 'My Blog', icon: 'star', url: '/myblog'},
-          { title: 'New Post', icon: 'note_add', url: '/newpost'},
-          { title: 'Calendar', icon: 'date_range', url: '/calendar'}
+          { title: 'New Post', icon: 'note_add', url: '/newpost'}
         ]
       } else{
         return [
