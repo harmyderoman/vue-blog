@@ -14,7 +14,7 @@ class Post{
 
 export default {
     state: {
-        author: 'Author',
+        author: '',
         posts: []
     },
     mutations: {
@@ -28,7 +28,19 @@ export default {
         }
     },
     actions: {
-        async createPost({commit, getters}, payload) {
+        async uploadImage({commit},payload){
+            try{
+                const imageExt = payload.image.name.slice(payload.image.name.lastIndexOf('.'))
+                await fb.storage().ref(`posts/${payload.post.key}.${imageExt}`).put(payload.image)
+                const src = await fb.storage().ref(`posts/${payload.post.key}.${imageExt}`).getDownloadURL()
+                
+                return src
+            } catch(error){
+                commit('setError', "Error while uploading image " + error.message)
+                throw(error)
+            }
+        },
+        async createPost({commit, getters, dispatch}, payload) {
             // payload.id = Math.random()
             commit('clearError')
             commit('setLoading', true)
@@ -41,18 +53,22 @@ export default {
                     payload.text, 
                     getters.user.id, //payload.author 
                     '',
-                    payload.date
+                    payload.date,
+                    Math.floor(Math.random() * 10000) + 1
                 )
 
                 const post = await fb.database().ref('posts').push(newPost)
-                const imageExt = image.name.slice(image.name.lastIndexOf('.'))
+                const imageExt = image.name.slice(image.name.lastIndexOf('.')+1)
 
-                const fileData = await fb.storage().ref(`posts/${post.key}.${imageExt}`).put(image)
-                const src = await fileData.metadata.downloadURLs[0]
-                // eslint-disable-next-line 
-                console.log('imageSrc is ',imageSrc)
+                await fb.storage().ref(`posts/${post.key}.${imageExt}`).put(image)
+                
+                // const src = await fb.storage().ref(`posts/${post.key}.${imageExt}`).getDownloadURL()
+
+                const src = await dispatch('uploadImage',{post, image})
+   
                 await fb.database().ref('posts').child(post.key).update({
-                    imageSrc: src
+                    imageSrc: src,
+                    id: post.key
                 })
                 
                 commit('setLoading', false)
