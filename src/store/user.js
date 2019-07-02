@@ -1,38 +1,37 @@
 import * as fb from 'firebase'
 
 class User {
-    constructor (id, email) {
-        this.uid = id
+    constructor (uid, nickname = 'Anonimus', email = 'no email') {
+        this.id = uid,
+        this.nickname = nickname,
         this.email = email
     }
 }
-class Nickname {
-  constructor (user){
-    this.nickname = user.nickname,
-    this.email = user.email
-  }
-}
 
-export default{
+export default {
     state: {
-        user: null
+        user: null,
+        userInfo: {}
     },
     mutations: {
         setUser (state, payload) {
             state.user = payload
+        },
+        cleareUser(state) {
+            state.user = null
+            state.userInfo = {}
         }
     },
     actions: {
-        async registUser ({commit}, {nickname, email, password}) {
+        async registUser ({commit, dispatch}, { email, password, nickname}) {
             commit('clearError')
             commit('setLoading', true)
             try {
-              const user = await fb.auth().createUserWithEmailAndPassword(email, password)
-              const newAuthor = new Nickname({nickname, email})
-              console.log(user)
-              await fb.database().ref('authors').push(newAuthor)
-              
-              commit('setUser', new User(user.uid, email))
+              await fb.auth().createUserWithEmailAndPassword(email, password)
+              const uid = await dispatch('getUid')
+              const userInfo = await fb.database().ref(`authors/${uid}/info`).set({nickname, email})
+           
+              commit('setUser', new User(uid, nickname, email))
               commit('setLoading', false)
             } catch (error) {
               commit('setLoading', false)
@@ -53,13 +52,17 @@ export default{
               throw error
             }
           },
-          autoLoginUser({commit}, payload){
-            // const nickname = await 
-            commit('setUser', new User(payload.uid, payload.nickname))
+          async autoLoginUser({commit}, payload){
+            const userInfo = (await fb.database().ref(`authors/${payload.uid}/info`).once('value')).val()
+            commit('setUser', new User(payload.uid, userInfo.nickname, userInfo.email))
           },
           logOutUser({commit}) {
             fb.auth().signOut()
             commit('setUser', null)
+          },
+           getUid() {
+              const user = fb.auth().currentUser
+              return user ? user.uid : null
           }
     },
     getters: {

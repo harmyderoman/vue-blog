@@ -165,8 +165,8 @@ export default {
       if(this.$store.getters.user === null){
         return 'Author'
       }
-      console.log(this.$store.getters.user)
-      return this.$store.getters.user.email
+      
+      return this.$store.getters.user.nickname
     },
     error() {
       return this.$store.getters.error

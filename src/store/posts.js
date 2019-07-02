@@ -1,17 +1,18 @@
-import * as fb from 'firebase';
+import * as fb from 'firebase'
 
 class Post{
-    constructor(title, text, author, imageSrc = '', id = null, date){
+    constructor(title, text, ownerId, imageSrc = '',date, id = null ){
         this.title = title
         this.text = text
-        this.author = author
+        this.ownerId = ownerId
         this.imageSrc = imageSrc
-        this.id = id
         this.date = date
+        this.id = id
+        
     }
 }
 
-export default{
+export default {
     state: {
         author: 'Author',
         posts: []
@@ -19,6 +20,8 @@ export default{
     mutations: {
         createPost(state, payload){
             state.posts.push(payload)
+            // eslint-disable-next-line
+            console.log(state.posts)
         },
         loadPosts(state, payload){
             state.posts = payload
@@ -36,33 +39,39 @@ export default{
                 const newPost = new Post(
                     payload.title, 
                     payload.text, 
-                    'Anonimus', //payload.author 
-                    '', 
-                    payload.id,
-                    payload.date)
+                    getters.user.id, //payload.author 
+                    '',
+                    payload.date
+                )
 
                 const post = await fb.database().ref('posts').push(newPost)
                 const imageExt = image.name.slice(image.name.lastIndexOf('.'))
+
                 const fileData = await fb.storage().ref(`posts/${post.key}.${imageExt}`).put(image)
-                const imageSrc = fileData.metadata.downloadURLs[0]
+                const src = await fileData.metadata.downloadURLs[0]
+                // eslint-disable-next-line 
+                console.log('imageSrc is ',imageSrc)
                 await fb.database().ref('posts').child(post.key).update({
-                    imageSrc
+                    imageSrc: src
                 })
                 
                 commit('setLoading', false)
                 commit('createPost', {
-                    ...newPost,
+                    title: newPost.title,
+                    text: newPost.text,
+                    ownerId: newPost.ownerId,
+                    imageSrc: src,
+                    date: newPost.date,
                     id: post.key,
-                    imageSrc: imageSrc
+                    
                 })
-                console.log(post)
+            
             } catch(error){
                 commit('setError', error.message)
                 commit('setLoading', false)
                 throw(error)
             }
-
-            // commit('createPost', payload)
+            
         },
         async fetchPosts({commit}) {
             commit('clearError')
@@ -79,6 +88,8 @@ export default{
                 commit('setLoading', false)
 
                 throw error
+            } finally {
+                commit('setLoading', false)
             }
         }
     },
@@ -92,15 +103,15 @@ export default{
         posts(state) {
             return state.posts
         },
-        authorPosts(state, author) {
+        authorPosts(state) {
             return state.posts.filter(post =>{
-                return post.author === state.author
+                return post.ownerId === state.user.id
             })
         },
-        sortByAuthor(state) {
-
-
-            return auPosts
+        sortByAuthor(state, uid) {
+            return state.posts.filter(post =>{
+                return post.ownerId === uid
+            })
         },
         postById: state => id => {
             return state.posts.find(post => post.id === id)

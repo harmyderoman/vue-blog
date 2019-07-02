@@ -94,19 +94,19 @@ export default {
       const file = event.target.files[0]
 
       const reader = new FileReader()
-      reader.onload = e => {
+      reader.onload = () => {
         this.imageSrc = reader.result
       }
       reader.readAsDataURL(file)
       this.image = file 
     },
     createPost () {
-      if (this.$refs.form.validate() && this.imageSrc) {
+      if (this.$refs.form.validate() && this.image) {
         const now = new Date().toDateString();
-        let newId = this.$store.getters.postSize;
+        // let newId = this.$store.getters.postSize;
         const post = {
-            author: this.author, //nickname
-            id: (++newId).toString(),
+            // author: this.author, //nickname
+            // id: (++newId).toString(),
             title: this.title,
             img: this.image,
             date: now,
@@ -114,17 +114,17 @@ export default {
         }
         this.postAdded = true
         this.$store.dispatch('createPost', post)
-          // .then(()=>{
-          //   this.$router.push('/myblog')
-          // })
-          // .catch(()=>{})
+          .then(()=>{
+            this.$router.push('/myblog')
+          })
+          .catch(()=>{})
         
-          this.title = ''
-          this.text = ''
-          this.titlevalid = false
+          // this.title = ''
+          // this.text = ''
+          // this.titlevalid = false
           // this.author = 'Admin'
          // eslint-disable-next-line
-          console.log(post)
+          console.info(post)
         }
       }
     }

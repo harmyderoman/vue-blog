@@ -99,15 +99,15 @@ export default {
       }
     },
   methods: {
-    signUp(){
+    async signUp(){
       if (this.$refs.form.validate()){
         const user = {
-          nickname: this.nickname,
+          email: this.email,
           password: this.password,
-          email: this.email
+          nickname: this.nickname
         }
 
-        this.$store.dispatch('registUser', user)
+        await this.$store.dispatch('registUser', user)
           .then(() =>{
             this.$router.push('/')
           })
