@@ -43,8 +43,11 @@ export default {
             commit('clearError')
             commit('setLoading', true)
             try {
-              const user = await fb.auth().signInWithEmailAndPassword(email, password)
-              commit('setUser', new User(user.uid))
+              await fb.auth().signInWithEmailAndPassword(email, password)
+              const user = await fb.auth().currentUser
+              const userInfo = (await fb.database().ref(`authors/${user.uid}/info`).once('value')).val()
+
+              commit('setUser', new User(user.uid, userInfo.nickname, userInfo.email))
               commit('setLoading', false)
             } catch (error) {
               commit('setLoading', false)

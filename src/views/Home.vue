@@ -15,7 +15,7 @@
         <v-img
           class="white--text"
           height="200px"
-          :src="post.img"
+          :src="post.imageSrc"
         >
           <v-container fill-height fluid>
             <v-layout fill-height>

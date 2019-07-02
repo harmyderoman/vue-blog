@@ -1,20 +1,19 @@
 import * as fb from 'firebase'
 
 class Post{
-    constructor(title, text, ownerId, imageSrc = '',date, id = null ){
+    constructor(title, text, ownerId, imageSrc = '',date, id = null, author = 'Anon' ){
         this.title = title
         this.text = text
         this.ownerId = ownerId
         this.imageSrc = imageSrc
         this.date = date
         this.id = id
-        
+        this.author = author
     }
 }
 
 export default {
     state: {
-        author: '',
         posts: []
     },
     mutations: {
@@ -41,11 +40,11 @@ export default {
             }
         },
         async createPost({commit, getters, dispatch}, payload) {
-            // payload.id = Math.random()
             commit('clearError')
             commit('setLoading', true)
 
             const image = payload.img
+            // const uid = getters.user.id
 
             try{
                 const newPost = new Post(
@@ -58,29 +57,36 @@ export default {
                 )
 
                 const post = await fb.database().ref('posts').push(newPost)
-                const imageExt = image.name.slice(image.name.lastIndexOf('.')+1)
-
-                await fb.storage().ref(`posts/${post.key}.${imageExt}`).put(image)
-                
-                // const src = await fb.storage().ref(`posts/${post.key}.${imageExt}`).getDownloadURL()
+                // const imageExt = image.name.slice(image.name.lastIndexOf('.')+1)
 
                 const src = await dispatch('uploadImage',{post, image})
-   
+                const authorInfo = (await fb.database().ref(`authors/${getters.user.id}/info`).once('value')).val()
+                // const authorInfo = await dispatch('findAuthorById', uid)
                 await fb.database().ref('posts').child(post.key).update({
                     imageSrc: src,
-                    id: post.key
+                    id: post.key,
+                    author: authorInfo.nickname
                 })
                 
                 commit('setLoading', false)
                 commit('createPost', {
                     title: newPost.title,
                     text: newPost.text,
-                    ownerId: newPost.ownerId,
+                    ownerId: getters.user.id,
                     imageSrc: src,
                     date: newPost.date,
                     id: post.key,
-                    
+                    author: authorInfo.nickname
                 })
+                // commit('createPost', {
+                //     title: newPost.title,
+                //     text: newPost.text,
+                //     ownerId: newPost.ownerId,
+                //     imageSrc: src,
+                //     date: newPost.date,
+                //     id: post.key,
+                    
+                // })
             
             } catch(error){
                 commit('setError', error.message)
@@ -103,11 +109,13 @@ export default {
                 commit('setError', error.message)
                 commit('setLoading', false)
 
-                throw error
-            } finally {
-                commit('setLoading', false)
-            }
-        }
+                // throw error
+            } 
+        },
+        // async findAuthorById(id){
+        //   const info = (await fb.database().ref(`authors/${id}/info`).once('value')).val()
+        //   return info
+        // }
     },
     getters: {
         postSize(state) {
@@ -118,31 +126,22 @@ export default {
         },
         posts(state) {
             return state.posts
-        },
-        authorPosts(state) {
-            return state.posts.filter(post =>{
-                return post.ownerId === state.user.id
-            })
-        },
-        sortByAuthor(state, uid) {
-            return state.posts.filter(post =>{
-                return post.ownerId === uid
-            })
-        },
-        postById: state => id => {
-            return state.posts.find(post => post.id === id)
-            // return postId => {
-            //     return state.posts.find(post => post.id === postId )
-            // }
-        },
-        // getTodoById: state => id => {
-        //     return state.todos.find(todo => todo.id === id);
-        //   }
-        firstPost(state) {
-            return state.posts[0]
-        },
-        author(state){
-            return state.author
         }
+        // authorPosts(state) {
+        //     return state.posts.filter(post =>{
+        //         return post.ownerId === state.user.id
+        //     })
+        // }
+        // sortByAuthor(state, uid) {
+        //     return state.posts.filter(post =>{
+        //         return post.ownerId === uid
+        //     })
+        // },
+        // postById: state => id => {
+        //     return state.posts.find(post => post.id === id)
+        //     // return postId => {
+        //     //     return state.posts.find(post => post.id === postId )
+        //     // }
+        // }
     }
 }
