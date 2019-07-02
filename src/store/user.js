@@ -29,7 +29,7 @@ export default {
             try {
               await fb.auth().createUserWithEmailAndPassword(email, password)
               const uid = await dispatch('getUid')
-              const userInfo = await fb.database().ref(`authors/${uid}/info`).set({nickname, email})
+              await fb.database().ref(`authors/${uid}/info`).set({nickname, email})
            
               commit('setUser', new User(uid, nickname, email))
               commit('setLoading', false)
