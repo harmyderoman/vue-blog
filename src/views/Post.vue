@@ -21,8 +21,8 @@
                     <v-divider></v-divider>
                     <v-card-action>
                         <v-spacer></v-spacer>
-                        <v-btn class="primary" :to="'/'">Back</v-btn>
-                        <v-btn class="accent" :to="'/newpost'">Edit</v-btn>
+                        <v-btn class="primary" :to="'/'">Home</v-btn>
+                        <v-btn class="accent" :to="'/newpost'">Create new Post</v-btn>
                     </v-card-action>
                 </v-card>
             </v-flex>
@@ -34,12 +34,9 @@
 export default {
     props: ['id' ],
     computed: {
-        // post() {
-        //     const id = this.id
-        //     return this.$store.getters.postById(id)
-        // }
-        post(){
-            return this.$store.getters.posts.find(post => post.id === this.id)
+        post() {
+            const id = this.id
+            return this.$store.getters.postById(id)
         }
     }
     

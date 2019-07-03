@@ -48,19 +48,18 @@ export default {
                 var newPost = new Post(
                     payload.title, 
                     payload.text, 
-                    getters.user.id, //payload.author 
+                    getters.user.id, 
                     '',
                     payload.date,
                     Math.floor(Math.random() * 10000) + 1
                 )
 
                 const post = await fb.database().ref('posts').push(newPost)
-                // const imageExt = image.name.slice(image.name.lastIndexOf('.')+1)
 
                 const src = await dispatch('uploadImage',{post, image})
                 const info = await fb.database().ref(`authors/${getters.user.id}/info`).once('value')
                 const authorInfo = info.val()
-                // const authorInfo = await dispatch('findAuthorById', uid)
+                
                 await fb.database().ref('posts').child(post.key).update({
                     imageSrc: src,
                     id: post.key,
@@ -68,16 +67,16 @@ export default {
                 })
                 
                 commit('setLoading', false)
-                dispatch('fetchPosts')
-                // commit('createPost', {
-                //     title: newPost.title,
-                //     text: newPost.text,
-                //     ownerId: getters.user.id,
-                //     imageSrc: src,
-                //     date: newPost.date,
-                //     id: post.key,
-                //     author: authorInfo.nickname
-                // })
+                // dispatch('fetchPosts')
+                commit('addPost', {
+                    title: newPost.title,
+                    text: newPost.text,
+                    ownerId: getters.user.id,
+                    imageSrc: src,
+                    date: newPost.date,
+                    id: post.key,
+                    author: authorInfo.nickname
+                })
 
                 
             
@@ -95,7 +94,6 @@ export default {
             try {
                 const fbPosts = await fb.database().ref('posts').once('value')
                 const posts = fbPosts.val()
-                //console.log(posts)
                 commit('loadPosts', posts)
 
                 commit('setLoading', false)
@@ -106,7 +104,8 @@ export default {
                 throw error
             } 
             commit('setLoading', false)
-        }
+        },
+
         // async findAuthorById(id){
         //   const info = (await fb.database().ref(`authors/${id}/info`).once('value')).val()
         //   return info
@@ -128,16 +127,8 @@ export default {
                 })
             }
         },
-        sortByAuthor(state, uid) {
-            return state.posts.filter(post =>{
-                return post.ownerId === uid
-            })
-        },
         postById(state){ return id => {
-            return state.posts.find(post => post.ownerId === id)}
-            // return postId => {
-            //     return state.posts.find(post => post.id === postId )
-            // }
+            return state.posts.find(post => post.id === id)}
         }
     }
 }

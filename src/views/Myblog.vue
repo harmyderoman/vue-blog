@@ -3,6 +3,7 @@
       <v-layout row>
         <v-flex xs12>
           <h1>My Blog</h1>
+          <h2><i>{{ author }}</i></h2>
         </v-flex>
       </v-layout>
        <v-layout row wrap>
@@ -34,7 +35,7 @@
         </v-card-title>
         <v-card-actions>
           <v-btn flat color="primary" 
-          :to="'/post/' + post.author.toLowerCase() + '/' + post.id">Read More</v-btn>
+          :to="'/post/' + post.id">Read More</v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="orange">Edit</v-btn>
         </v-card-actions>
@@ -51,29 +52,15 @@
 export default {
   data() {
     return{
-      // author: 'Roma'
-      // posts: [
-      //   {
-      //     author: "Roma",
-      //     date: "Tue Jul 02 2019",
-      //     id: "-LimQ7KhIZzNxy8JQ1xY",
-      //     imageSrc: "https://firebasestorage.googleapis.com/v0/b/vue-blog-journal.appspot.com/o/posts%2F-LimMWCAMKJ7Ftbmy35x..jpg?alt=media&token=7f89d64a-004e-471e-b4fd-fbec13e3c2c7",
-      //     ownerId: "3WLhgs8MQ1YSKTuYMuwQshhfsPG2",
-      //     text: "Some lazy text",
-      //     title: "My new Post!!!"
-
-      //   }
-      // ]
-     
     }
   },
   computed: {
-    // posts() {
-      
-    //   return this.$store.getters.authorPosts(this.$store.getters.user.id)
-     
-      
-    // }
+    posts() {
+      return this.$store.getters.authorPosts(this.$store.getters.user.id)
+    },
+    author(){
+      return this.$store.getters.user.nickname
+    }
   }
 
 }
