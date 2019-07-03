@@ -45,7 +45,8 @@
           <v-flex xs12>
             <v-spacer></v-spacer>
             <v-btn
-              :disabled="!valid || !image"
+              :loading="loading"
+              :disabled="!valid || !image || loading"
               class="success"
               @click="createPost"
             >
@@ -112,16 +113,20 @@ export default {
             date: now,
             text: this.text,
         }
-        this.postAdded = true
+        
         this.$store.dispatch('createPost', post)
           .then(()=>{
-            this.$router.push('/myblog')
+            // this.$router.push('/myblog')
+            this.postAdded = true
+            this.title = ''
+            this.text = ''
+            this.titlevalid = false
+            this.image = null
+            this.imageSrc = ''
           })
           .catch(()=>{})
         
-          // this.title = ''
-          // this.text = ''
-          // this.titlevalid = false
+          
           // this.author = 'Admin'
          // eslint-disable-next-line
           console.info(post)

@@ -108,7 +108,7 @@ export default {
 
         // async findAuthorById(id){
         //   const info = (await fb.database().ref(`authors/${id}/info`).once('value')).val()
-        //   return info
+        //   return info.nickname
         // }
     },
     getters: {

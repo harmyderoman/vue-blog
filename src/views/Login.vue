@@ -80,7 +80,7 @@ export default {
         }
         this.$store.dispatch('logonUser', user)
           .then(() =>{
-              this.$router.push('/')
+              this.$router.push('/myblog')
             })
             .catch(() => {})
       }
@@ -91,5 +91,10 @@ export default {
       this.$store.dispatch('setError', 'Please log in to access to this page')
     }
   }
+  // mounted(){
+  //   if(this.$store.getters.user != null){
+  //     this.$router.go(-1)
+  //   }
+  // }
 }
 </script>
