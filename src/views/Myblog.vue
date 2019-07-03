@@ -37,7 +37,7 @@
           <v-btn flat color="primary" 
           :to="'/post/' + post.id">Read More</v-btn>
           <v-spacer></v-spacer>
-          <v-btn flat color="orange">Edit</v-btn>
+          <!-- <v-btn flat color="orange">Edit</v-btn> -->
         </v-card-actions>
       </v-card>
     </v-flex>
