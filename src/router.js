@@ -8,6 +8,7 @@ import Login from './views/Login.vue'
 import Post from './views/Post.vue'
 import Guard from './router-guard'
 import NotFound from './views/NotFound'
+import Blog from './views/Blog'
 
 Vue.use(Router)
 
@@ -34,6 +35,12 @@ export default new Router({
       name: 'myblog',
       component: Myblog,
       beforeEnter: Guard
+    },
+    {
+      path: '/:author/:authorId',
+      props: true,
+      name: 'blog',
+      component: Blog
     },
     {
       path: '/newpost',
