@@ -30,7 +30,7 @@
         <v-card-title>
           <div>
             <span class="grey--text">{{ post.date}}</span><br><br>
-            <span>{{ post.text}}</span>
+            <span>{{ (post.text.slice(0, 60)+ ' ...')}}</span>
           </div>
         </v-card-title>
         <v-card-actions>
