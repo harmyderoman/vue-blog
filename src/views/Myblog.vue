@@ -2,8 +2,8 @@
     <v-container>
       <v-layout row>
         <v-flex xs12>
-          <h1>My Blog</h1>
-          <h2><i>{{ author }}</i></h2>
+          <h1 class="text--secondary mb-3">My Blog</h1>
+          <h2 class="text--secondary mb-3"><i>{{ author }}</i></h2>
         </v-flex>
       </v-layout>
        <v-layout row wrap>
