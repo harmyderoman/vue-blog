@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="user =! null">
+    <v-container>
       <v-layout row>
         <v-flex xs12>
           <h1>My Blog</h1>
@@ -52,28 +52,26 @@ export default {
   data() {
     return{
       // author: 'Roma'
-      posts: [
-        {
-          author: "Roma",
-          date: "Tue Jul 02 2019",
-          id: "-LimQ7KhIZzNxy8JQ1xY",
-          imageSrc: "https://firebasestorage.googleapis.com/v0/b/vue-blog-journal.appspot.com/o/posts%2F-LimMWCAMKJ7Ftbmy35x..jpg?alt=media&token=7f89d64a-004e-471e-b4fd-fbec13e3c2c7",
-          ownerId: "3WLhgs8MQ1YSKTuYMuwQshhfsPG2",
-          text: "Some lazy text",
-          title: "My new Post!!!"
+      // posts: [
+      //   {
+      //     author: "Roma",
+      //     date: "Tue Jul 02 2019",
+      //     id: "-LimQ7KhIZzNxy8JQ1xY",
+      //     imageSrc: "https://firebasestorage.googleapis.com/v0/b/vue-blog-journal.appspot.com/o/posts%2F-LimMWCAMKJ7Ftbmy35x..jpg?alt=media&token=7f89d64a-004e-471e-b4fd-fbec13e3c2c7",
+      //     ownerId: "3WLhgs8MQ1YSKTuYMuwQshhfsPG2",
+      //     text: "Some lazy text",
+      //     title: "My new Post!!!"
 
-        }
-      ]
+      //   }
+      // ]
      
     }
   },
   computed: {
     // posts() {
-    //   if(this.$store.getters.user){
-    //     return this.$store.getters.authorPosts
-    //   } else{
-    //     return null
-    //   }
+      
+    //   return this.$store.getters.authorPosts(this.$store.getters.user.id)
+     
       
     // }
   }

@@ -34,7 +34,7 @@
         </v-card-title>
         <v-card-actions>
           <v-btn flat color="primary" 
-          :to="'/post/' + post.author.toLowerCase() + '/' + post.id">Read More</v-btn>
+          :to="'/post/'+ post.id">Read More</v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="orange">Edit</v-btn>
         </v-card-actions>

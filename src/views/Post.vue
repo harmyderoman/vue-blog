@@ -5,7 +5,7 @@
                 <v-card>
                     <v-img
                     height="500px"
-                    :src="post.img">
+                    :src="post.imageSrc">
                     </v-img>
                     <v-card-text>
                         <h1>
@@ -32,11 +32,14 @@
 
 <script>
 export default {
-    props: ['author', 'id' ],
+    props: ['id' ],
     computed: {
-        post() {
-            var id = this.id
-            return this.$store.getters.postById(id)
+        // post() {
+        //     const id = this.id
+        //     return this.$store.getters.postById(id)
+        // }
+        post(){
+            return this.$store.getters.posts.find(post => post.id === this.id)
         }
     }
     
