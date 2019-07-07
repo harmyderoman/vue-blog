@@ -3,6 +3,9 @@ module.exports = {
     [
       "@vue/app",
       {
+        // polyfills:[
+        //   "Array.prototype.flat"
+        // ],
         "useBuiltIns": "entry"
       }
     ]
